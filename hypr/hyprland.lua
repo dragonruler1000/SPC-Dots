@@ -283,6 +283,100 @@ hl.bind(shiftMod .. " + PRINT", hl.dsp.exec_cmd("hyprshot -m region"))
 hl.bind(mainMod .. " + L", hl.dsp.exec_cmd("hyprlock"))
 --hl.bind("CALC", hl.dsp.exec_cmd("kcalc"))
 
+hl.config({
+    plugin = {
+        hypr_bongocat = {
+            -- can be from -1 to 1, will be
+                -- dynamic ratio with the window instead.
+                -- recommend fixed size for image as dynamic can look weird
+                -- leave one as 0 to keep original image ratio (image only)
+            -- width, height
+            size = { 125, 0 },
+
+            -- shift down right (can be from -1 to 1, similarly)
+            pos = { 200, -38 },
+
+            --0: left/top, 1: middle, 2: down/right
+            origin = { 1, 0 },
+
+            -- path to a directory with both.png, left.png, right.png
+            -- Absolute path is needed (~ for home directory is fine)
+            -- default directory when installing with Hyprpm:
+            imgs = "~/.config/hypr/hypr-bongocat/bongo",
+            color = "rgba(FF00FFFF)"
+
+            -- can also exclude specific windows!
+            -- exclude = "kitty, firefox",
+        }
+    }
+})
+if hl.plugin.hypr3d then
+    hl.bind("SUPER + F12", hl.plugin.hypr3d.toggle)
+    hl.plugin.hypr3d.config({
+        world = {
+            panorama = "~/panorama.png",
+            grid = false,
+        },
+        windows = {
+            window_scale = 0.25,
+            spawn_distance = 2,
+        },
+        player = {
+            mesh = {
+                path = "/home/zach/hypr3d/player/scene.gltf",
+                transform = {
+                    rotation = {0, 90, 0},
+                    scale =    {1.5, 1.5, 1.5},
+                },
+                emissive_scale = 1.0,
+                flat = true,
+                center = "origin",
+            },
+            animations = {
+                idle = {source = "Idle"},
+                walk = {source = "Walking"},
+                run = {source = 2},
+                jump = {source = 3, duration_scale=2.4},
+            },
+            collision = true,
+            move_speed = 1.5,
+            spawn = {0, 67, 0},
+            flying = true,
+            walk_bob = true
+        },
+        scene = {
+            mymap = {
+                mesh = {
+                    path = "/home/zach/hypr3d/world/scene.gltf",
+                    transform = {
+                        position = {1, 0, 0},
+                    },
+                    emissive_scale = 1.0,
+                    center_offset = {0, 34, 0},
+                },
+                collision = true,
+                static = true,
+            },
+            anyname = {
+                mesh = {
+                    path = "eevee.gltf",
+                    transform = {
+                        position = {y = 3},
+                        scale =    {2, 2, 2},
+                    },
+                    emissive_scale = 1.0,
+                    flat = true,
+                    center = "origin",
+                    center_offset = {0, 20, 0},
+                },
+                collision = true,
+                static = false,
+                physics = true,
+            },
+        }
+    })
+end
+
 hl.window_rule({
     name = "suppress-maximize-events",
     match = {
